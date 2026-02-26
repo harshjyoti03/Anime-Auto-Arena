@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { GameContext } from "../services/GameContext"
 import { generateBotDeck } from "../game/botAI"
@@ -6,6 +6,11 @@ import { generateBotDeck } from "../game/botAI"
 function DeckArrange() {
   const navigate = useNavigate()
   const { playerDeck, setPlayerDeck, selectedUniverse, setBotDeck } = useContext(GameContext)
+  useEffect(() => {
+    if (!selectedUniverse || playerDeck.length === 0) {
+        navigate("/")
+    }
+  }, [selectedUniverse, playerDeck, navigate])
 
   const moveUp = (index) => {
     if (index === 0) return

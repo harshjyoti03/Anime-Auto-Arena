@@ -4,8 +4,15 @@ import { GameContext } from "../services/GameContext"
 import { runBattle } from "../game/battleEngine"
 
 function Battle() {
-  const { playerDeck, botDeck } = useContext(GameContext)
   const navigate = useNavigate()
+
+  const { playerDeck, botDeck } = useContext(GameContext)
+
+  useEffect(() => {
+    if (!playerDeck || playerDeck.length === 0) {
+      navigate("/")
+    }
+  }, [playerDeck, navigate])
 
   const [battleLog, setBattleLog] = useState([])
   const [currentStep, setCurrentStep] = useState(0)
@@ -13,14 +20,15 @@ function Battle() {
 
   const handleBackHome = () => {
     navigate("/")
-    window.location.reload()
   }
 
   useEffect(() => {
+    if (!playerDeck || playerDeck.length === 0) return
+
     const battleData = runBattle(playerDeck, botDeck)
     setBattleLog(battleData.log)
     setResult(battleData.winner)
-  }, [])
+  }, [playerDeck, botDeck])
 
   useEffect(() => {
     if (currentStep < battleLog.length - 1) {
