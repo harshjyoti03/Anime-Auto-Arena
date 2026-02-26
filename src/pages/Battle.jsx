@@ -36,7 +36,12 @@ function Battle() {
   const currentFight = battleLog[currentStep]
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div style={{
+        maxWidth: "1200px",
+        margin: "0 auto",
+        padding: "40px",
+        textAlign: "center"
+    }}>
       <h2>⚔️ Battle Arena</h2>
 
       {/* Player Deck */}
@@ -52,9 +57,25 @@ function Battle() {
       {/* Current Fight */}
       <h3>Current Fight</h3>
       <div style={fightStyle}>
-        <Card card={currentFight.playerCard} highlight />
-        <span style={{ fontSize: "24px" }}>VS</span>
-        <Card card={currentFight.botCard} highlight />
+        <Card 
+            card={currentFight.playerCard} 
+            highlight 
+            damaged={currentStep % 2 === 1}
+        />
+
+        <span style={{
+            fontSize: "40px",
+            fontWeight: "800",
+            textShadow: "0 0 12px #fff"
+        }}>
+            VS
+        </span>
+
+        <Card 
+            card={currentFight.botCard} 
+            highlight 
+            damaged={currentStep % 2 === 0}
+        />
       </div>
 
       <hr style={{ margin: "20px 0" }} />
@@ -89,12 +110,15 @@ function Battle() {
   )
 }
 
-function Card({ card, highlight }) {
+function Card({ card, highlight, damaged }) {
   const hpPercent = (card.hp / card.maxHp) * 100
 
   return (
     <div
-      className={`card ${card.rarity} ${highlight ? "attack-animate" : ""}`}
+      className={`card ${card.rarity} 
+        ${highlight ? "attack-animate" : ""}
+        ${damaged ? "damage-shake hit-flash" : ""}
+      `}
     >
       <strong>{card.name}</strong>
       <p>ATK: {card.attack}</p>
@@ -113,14 +137,19 @@ function Card({ card, highlight }) {
 
 const rowStyle = {
   display: "flex",
-  gap: "10px",
-  flexWrap: "wrap"
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "25px",
+  flexWrap: "wrap",
+  marginTop: "20px"
 }
 
 const fightStyle = {
   display: "flex",
+  justifyContent: "center",
   alignItems: "center",
-  gap: "20px"
+  gap: "60px",
+  margin: "30px 0"
 }
 
 const cardStyle = {

@@ -13,13 +13,28 @@ function UniverseSelect() {
   }
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h2>Select Universe</h2>
-      <button onClick={handleSelect}>
-        Sample Arena
-      </button>
+    <div style={containerStyle}>
+      <h1>Select Universe</h1>
+
+      <div
+        className="universe-card"
+        onClick={handleSelect}
+      >
+        <h2>Sample Arena</h2>
+        <p>Basic Test Universe</p>
+      </div>
     </div>
   )
+}
+
+const containerStyle = {
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "40px",
+  textAlign: "center"
 }
 
 export default UniverseSelect

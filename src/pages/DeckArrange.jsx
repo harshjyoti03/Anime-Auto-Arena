@@ -28,14 +28,33 @@ function DeckArrange() {
   }
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div style={{
+        maxWidth: "800px",
+        margin: "0 auto",
+        padding: "40px"
+    }}>
       <h2>Arrange Your Deck</h2>
 
       {playerDeck.map((card, index) => (
-        <div key={card.id} style={{ marginBottom: "10px" }}>
-          {card.name} (ATK {card.attack})
-          <button onClick={() => moveUp(index)}>↑</button>
-          <button onClick={() => moveDown(index)}>↓</button>
+        <div
+            key={card.id}
+            className={`card ${card.rarity}`}
+            style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "15px"
+            }}
+        >
+            <div>
+            <strong>{index + 1}. {card.name}</strong>
+            <p>ATK {card.attack}</p>
+            </div>
+
+            <div>
+            <button onClick={() => moveUp(index)}>↑</button>
+            <button onClick={() => moveDown(index)}>↓</button>
+            </div>
         </div>
       ))}
 

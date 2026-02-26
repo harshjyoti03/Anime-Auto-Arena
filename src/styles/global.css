@@ -4,17 +4,29 @@
 
 body {
   margin: 0;
-  background-color: #0f0f1a;
+  font-family: 'Orbitron', sans-serif;
+  background: radial-gradient(circle at 30% 30%, #141430, #0a0a18);
+  background-size: 200% 200%;
+  animation: backgroundMove 15s ease infinite;
   color: white;
-  font-family: Inter, sans-serif;
+}
+
+@keyframes backgroundMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 button {
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  font-weight: 600;
+  background: linear-gradient(90deg, #3b82f6, #a855f7);
+  color: white;
+  font-weight: bold;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #a855f7;
 }
 
 a {
@@ -23,12 +35,17 @@ a {
 }
 
 .card {
-  background-color: #1a1a2e;
-  padding: 12px;
-  border-radius: 10px;
+  background: linear-gradient(145deg, #1a1a2e, #141422);
+  padding: 14px;
+  border-radius: 12px;
   min-width: 120px;
   position: relative;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.03);
 }
 
 .card.common {
@@ -42,7 +59,7 @@ a {
 
 .card.epic {
   border: 2px solid #a855f7;
-  box-shadow: 0 0 15px #a855f7;
+  box-shadow: 0 0 18px #a855f7;
 }
 
 .hp-bar {
@@ -65,6 +82,75 @@ a {
 
 @keyframes attackMove {
   0% { transform: translateX(0); }
-  50% { transform: translateX(10px); }
+  40% { transform: translateX(15px) scale(1.05); }
   100% { transform: translateX(0); }
 }
+
+body {
+  margin: 0;
+  background-color: #0f0f1a;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.hit-flash {
+  animation: hitFlash 0.2s ease;
+}
+
+@keyframes hitFlash {
+  0% { background-color: #ff0000; }
+  100% { background-color: inherit; }
+}
+
+.card.selected {
+  transform: scale(1.08);
+  border: 3px solid #00ffcc !important;
+  box-shadow: 0 0 20px #00ffcc !important;
+}
+
+.card.unselected-dim {
+  opacity: 0.4;
+  filter: grayscale(40%);
+}
+
+.selected-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #00ffcc;
+  color: black;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.universe-card {
+  width: 300px;
+  padding: 30px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #1a1a2e, #141422);
+  border: 2px solid #3b82f6;
+  box-shadow: 0 0 15px #3b82f6;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.universe-card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px #a855f7;
+  border-color: #a855f7;
+}
+
+.damage-shake {
+  animation: damageShake 0.3s ease;
+}
+
+@keyframes damageShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+

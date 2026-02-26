@@ -28,49 +28,92 @@ function CardPool() {
   }
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h2>Select 5 Cards ({selectedCards.length}/5)</h2>
+    <>
+        <div style={containerStyle}>
+        <h2>Select 5 Cards ({selectedCards.length}/5)</h2>
 
-      <div style={gridStyle}>
-        {selectedUniverse.cards.map(card => (
-          <div
-            key={card.id}
-            onClick={() => toggleCard(card)}
+        <div style={gridStyle}>
+            {selectedUniverse.cards.map(card => (
+            <div
+                key={card.id}
+                onClick={() => toggleCard(card)}
+                className={`card ${card.rarity}
+                ${selectedCards.includes(card) ? "selected" : ""}
+                ${selectedCards.length === 5 && !selectedCards.includes(card) ? "unselected-dim" : ""}
+                `}
+            >
+                {selectedCards.includes(card) && (
+                <div className="selected-badge">✓</div>
+                )}
+
+                <strong>{card.name}</strong>
+                <p>ATK: {card.attack}</p>
+                <p>HP: {card.hp}</p>
+            </div>
+            ))}
+        </div>
+
+        <button
+            onClick={proceed}
+            disabled={selectedCards.length !== 5}
             style={{
-              ...cardStyle,
-              backgroundColor: selectedCards.includes(card)
-                ? "#2a2a4f"
-                : "#1a1a2e"
+            marginTop: "40px",
+            padding: "14px 28px",
+            fontSize: "16px",
+            background: selectedCards.length === 5
+                ? "linear-gradient(90deg, #3b82f6, #a855f7)"
+                : "#444",
+            color: "white",
+            borderRadius: "10px"
             }}
-          >
-            <h4>{card.name}</h4>
-            <p>ATK: {card.attack}</p>
-            <p>HP: {card.hp}</p>
-          </div>
-        ))}
-      </div>
+        >
+            Proceed to Arrange
+        </button>
+        </div>
 
-      <button
-        onClick={proceed}
-        disabled={selectedCards.length !== 5}
-        style={{ marginTop: "20px" }}
-      >
-        Proceed
-      </button>
-    </div>
+        {/* 🔥 Selected Deck Preview Bar */}
+        <div style={{
+        position: "fixed",
+        bottom: "0",
+        left: "0",
+        right: "0",
+        background: "#111122",
+        padding: "15px 20px",
+        borderTop: "2px solid #3b82f6",
+        display: "flex",
+        justifyContent: "center",
+        gap: "15px",
+        zIndex: 100
+        }}>
+        {selectedCards.map(card => (
+            <div
+            key={card.id}
+            className={`card ${card.rarity}`}
+            style={{
+                minWidth: "120px",
+                transform: "scale(0.85)"
+            }}
+            >
+            <strong>{card.name}</strong>
+            </div>
+        ))}
+        </div>
+    </>
   )
+}
+
+const containerStyle = {
+  maxWidth: "1200px",
+  margin: "0 auto",
+  padding: "40px",
+  paddingBottom: "120px"
 }
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-  gap: "15px"
-}
-
-const cardStyle = {
-  padding: "15px",
-  borderRadius: "10px",
-  cursor: "pointer"
+  gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+  gap: "25px",
+  marginTop: "30px"
 }
 
 export default CardPool
