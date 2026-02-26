@@ -1,16 +1,25 @@
+import { useContext } from "react"
+import { useNavigate } from "react-router-dom"
+import { GameContext } from "../services/GameContext"
+import sampleUniverse from "../data/sampleUniverse"
+
 function UniverseSelect() {
+  const navigate = useNavigate()
+  const { setSelectedUniverse } = useContext(GameContext)
+
+  const handleSelect = () => {
+    setSelectedUniverse(sampleUniverse)
+    navigate("/cardpool")
+  }
+
   return (
-    <div style={styles.container}>
+    <div style={{ padding: "40px" }}>
       <h2>Select Universe</h2>
-      <p>(Universe system coming in Phase 2)</p>
+      <button onClick={handleSelect}>
+        Sample Arena
+      </button>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    padding: "40px"
-  }
 }
 
 export default UniverseSelect
