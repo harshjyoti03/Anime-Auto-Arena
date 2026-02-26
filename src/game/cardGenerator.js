@@ -1,3 +1,6 @@
+
+import { abilityPool } from "./abilities"
+
 function seededRandom(seed) {
   const x = Math.sin(seed) * 10000
   return x - Math.floor(x)
@@ -26,15 +29,32 @@ function generateStats(rarity, seed) {
   return { attack: baseAttack, hp: baseHP }
 }
 
+function assignAbility(rarity, seed) {
+  const chance = seededRandom(seed + 5)
+
+  if (rarity === "epic" && chance > 0.3) {
+    return abilityPool[Math.floor(chance * abilityPool.length)]
+  }
+
+  if (rarity === "rare" && chance > 0.6) {
+    return abilityPool[Math.floor(chance * abilityPool.length)]
+  }
+
+  return null
+}
+
 export function generateCard(name, id, universeSeed = 1) {
   const combinedSeed = id * universeSeed
   const rarity = getRarity(combinedSeed)
   const stats = generateStats(rarity, combinedSeed)
 
+  const ability = assignAbility(rarity, combinedSeed)
+
   return {
     id,
     name,
     rarity,
+    ability,
     ...stats
   }
 }

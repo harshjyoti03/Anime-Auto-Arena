@@ -13,6 +13,10 @@ export function runBattle(playerDeck, botDeck) {
       botCard: { ...botCard }
     })
 
+    // Ability: onAttack
+    if (playerCard.ability?.trigger === "onAttack") {
+        playerCard.ability.effect(playerCard, botCard)
+    }
     // Player attacks
     botCard.hp -= playerCard.attack
     if (botCard.hp <= 0) {
@@ -22,12 +26,23 @@ export function runBattle(playerDeck, botDeck) {
       continue
     }
 
+    if (botCard.ability?.trigger === "onAttack") {
+        botCard.ability.effect(botCard, playerCard)
+    }
     // Bot attacks
     playerCard.hp -= botCard.attack
     if (playerCard.hp <= 0) {
       playerIndex++
       if (playerIndex >= 5) break
       playerCard = { ...playerDeck[playerIndex], maxHp: playerDeck[playerIndex].hp }
+    }
+
+    if (playerCard.ability?.trigger === "onLowHP" && playerCard.hp <= playerCard.maxHp / 2) {
+        playerCard.ability.effect(playerCard)
+    }
+
+    if (botCard.ability?.trigger === "onLowHP" && botCard.hp <= botCard.maxHp / 2) {
+        botCard.ability.effect(botCard)
     }
   }
 

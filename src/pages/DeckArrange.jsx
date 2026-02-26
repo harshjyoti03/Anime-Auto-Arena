@@ -54,6 +54,12 @@ function DeckArrange() {
             <div>
             <strong>{index + 1}. {card.name}</strong>
             <p>ATK {card.attack}</p>
+
+            {card.ability && (
+                <p style={{ color: "#facc15", fontSize: "12px" }}>
+                    ✨ {card.ability.name}
+                </p>
+            )}
             </div>
 
             <div>

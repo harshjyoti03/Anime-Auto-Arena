@@ -53,6 +53,11 @@ function CardPool() {
                 <strong>{card.name}</strong>
                 <p>ATK: {card.attack}</p>
                 <p>HP: {card.hp}</p>
+                {card.ability && (
+                    <p style={{ fontSize: "12px", marginTop: "6px", color: "#facc15" }}>
+                        ✨ {card.ability.name}
+                    </p>
+                )}
             </div>
             ))}
         </div>
