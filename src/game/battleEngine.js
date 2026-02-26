@@ -6,19 +6,26 @@ export function runBattle(playerDeck, botDeck) {
   let botCard = { ...botDeck[botIndex], maxHp: botDeck[botIndex].hp }
 
   const log = []
+  const combatLog = []
 
+  function processAbility(card, trigger, opponent) {
+    if (card.ability?.trigger === trigger) {
+      card.ability.effect(card, opponent)
+      combatLog.push(`${card.name} activated ${card.ability.name}`)
+    }
+  }
+  
   while (playerIndex < 5 && botIndex < 5) {
     log.push({
       playerCard: { ...playerCard },
       botCard: { ...botCard }
     })
 
-    // Ability: onAttack
-    if (playerCard.ability?.trigger === "onAttack") {
-        playerCard.ability.effect(playerCard, botCard)
-    }
     // Player attacks
+    processAbility(playerCard, "onAttack", botCard)
+
     botCard.hp -= playerCard.attack
+    
     if (botCard.hp <= 0) {
       botIndex++
       if (botIndex >= 5) break
@@ -26,27 +33,28 @@ export function runBattle(playerDeck, botDeck) {
       continue
     }
 
-    if (botCard.ability?.trigger === "onAttack") {
-        botCard.ability.effect(botCard, playerCard)
-    }
     // Bot attacks
+    processAbility(botCard, "onAttack", playerCard)
+
     playerCard.hp -= botCard.attack
+
     if (playerCard.hp <= 0) {
       playerIndex++
       if (playerIndex >= 5) break
       playerCard = { ...playerDeck[playerIndex], maxHp: playerDeck[playerIndex].hp }
     }
 
-    if (playerCard.ability?.trigger === "onLowHP" && playerCard.hp <= playerCard.maxHp / 2) {
-        playerCard.ability.effect(playerCard)
+    // low hp checks
+    if (playerCard.hp <= playerCard.maxHp / 2) {
+        processAbility(playerCard, "onLowHP", botCard)
     }
 
-    if (botCard.ability?.trigger === "onLowHP" && botCard.hp <= botCard.maxHp / 2) {
-        botCard.ability.effect(botCard)
+    if (botCard.hp <= botCard.maxHp / 2) {
+        processAbility(botCard, "onLowHP", playerCard)
     }
   }
 
   const winner = playerIndex >= 5 ? "Bot Wins" : "Player Wins"
 
-  return { log, winner }
+  return { log, winner, combatLog }
 }

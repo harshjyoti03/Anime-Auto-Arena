@@ -17,6 +17,8 @@ function Battle() {
   const [battleLog, setBattleLog] = useState([])
   const [currentStep, setCurrentStep] = useState(0)
   const [result, setResult] = useState(null)
+  const [combatLog, setCombatLog] = useState([])
+  const [visibleLog, setVisibleLog] = useState([])
 
   const handleBackHome = () => {
     navigate("/")
@@ -26,18 +28,32 @@ function Battle() {
     if (!playerDeck || playerDeck.length === 0) return
 
     const battleData = runBattle(playerDeck, botDeck)
+
     setBattleLog(battleData.log)
+    setCombatLog(battleData.combatLog || [])
     setResult(battleData.winner)
   }, [playerDeck, botDeck])
 
   useEffect(() => {
     if (currentStep < battleLog.length - 1) {
-      const timer = setTimeout(() => {
-        setCurrentStep(prev => prev + 1)
-      }, 800)
-      return () => clearTimeout(timer)
+        const timer = setTimeout(() => {
+        setCurrentStep(prev => {
+            const nextStep = prev + 1
+
+            if (combatLog[nextStep]) {
+            setVisibleLog(prevLog => [
+                ...prevLog,
+                combatLog[nextStep]
+            ])
+            }
+
+            return nextStep
+        })
+        }, 800)
+
+        return () => clearTimeout(timer)
     }
-  }, [currentStep, battleLog])
+  }, [currentStep, battleLog, combatLog])
 
   if (battleLog.length === 0) return <p>Loading Battle...</p>
 
@@ -94,6 +110,35 @@ function Battle() {
         {botDeck.map(card => (
           <Card key={card.id} card={card} />
         ))}
+      </div>
+
+
+
+      {/* Combat Log */}
+      <div style={{
+        marginTop: "40px",
+        padding: "20px",
+        background: "#111122",
+        borderRadius: "12px",
+        maxHeight: "200px",
+        overflowY: "auto",
+        textAlign: "left"
+      }}>
+        <h3>Combat Log</h3>
+        {visibleLog.length === 0 ? (
+            <p style={{ fontSize: "14px", opacity: 0.6 }}>
+            No abilities triggered.
+            </p>
+        ) : (
+            visibleLog.map((entry, index) => (
+                <p
+                    key={index}
+                    style={{ fontSize: "14px", margin: "4px 0" }}
+                >
+                    {entry}
+                </p>
+            ))
+        )}
       </div>
 
       {/* Result */}

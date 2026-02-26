@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react"
 import universes from "../data/universes"
+import { abilityPool } from "../game/abilities"
 
 export const GameContext = createContext()
 
@@ -14,12 +15,45 @@ export function GameProvider({ children }) {
 
   const [playerDeck, setPlayerDeck] = useState(() => {
     const saved = localStorage.getItem("playerDeck")
-    return saved ? JSON.parse(saved) : []
+
+    if (!saved) return []
+
+    const parsed = JSON.parse(saved)
+
+    // Reconnect ability functions
+    return parsed.map(card => {
+        if (!card.ability) return card
+
+        const realAbility = abilityPool.find(
+        a => a.id === card.ability.id
+        )
+
+        return {
+        ...card,
+        ability: realAbility || null
+        }
+    })
   })
 
   const [botDeck, setBotDeck] = useState(() => {
     const saved = localStorage.getItem("botDeck")
-    return saved ? JSON.parse(saved) : []
+
+    if (!saved) return []
+
+    const parsed = JSON.parse(saved)
+
+    return parsed.map(card => {
+        if (!card.ability) return card
+
+        const realAbility = abilityPool.find(
+        a => a.id === card.ability.id
+        )
+
+        return {
+        ...card,
+        ability: realAbility || null
+        }
+    })
   })
 
   useEffect(() => {
