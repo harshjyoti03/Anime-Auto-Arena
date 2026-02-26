@@ -90,16 +90,23 @@ function Battle() {
 }
 
 function Card({ card, highlight }) {
+  const hpPercent = (card.hp / card.maxHp) * 100
+
   return (
     <div
-      style={{
-        ...cardStyle,
-        border: highlight ? "2px solid gold" : "1px solid #333"
-      }}
+      className={`card ${card.rarity} ${highlight ? "attack-animate" : ""}`}
     >
       <strong>{card.name}</strong>
       <p>ATK: {card.attack}</p>
-      <p>HP: {card.hp}</p>
+
+      <div className="hp-bar">
+        <div
+          className="hp-fill"
+          style={{ width: `${hpPercent}%` }}
+        />
+      </div>
+
+      <small>{card.hp} HP</small>
     </div>
   )
 }

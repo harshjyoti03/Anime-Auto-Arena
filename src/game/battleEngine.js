@@ -2,8 +2,8 @@ export function runBattle(playerDeck, botDeck) {
   let playerIndex = 0
   let botIndex = 0
 
-  let playerCard = { ...playerDeck[playerIndex] }
-  let botCard = { ...botDeck[botIndex] }
+  let playerCard = { ...playerDeck[playerIndex], maxHp: playerDeck[playerIndex].hp }
+  let botCard = { ...botDeck[botIndex], maxHp: botDeck[botIndex].hp }
 
   const log = []
 
@@ -18,7 +18,7 @@ export function runBattle(playerDeck, botDeck) {
     if (botCard.hp <= 0) {
       botIndex++
       if (botIndex >= 5) break
-      botCard = { ...botDeck[botIndex] }
+      botCard = { ...botDeck[botIndex], maxHp: botDeck[botIndex].hp }
       continue
     }
 
@@ -27,7 +27,7 @@ export function runBattle(playerDeck, botDeck) {
     if (playerCard.hp <= 0) {
       playerIndex++
       if (playerIndex >= 5) break
-      playerCard = { ...playerDeck[playerIndex] }
+      playerCard = { ...playerDeck[playerIndex], maxHp: playerDeck[playerIndex].hp }
     }
   }
 
