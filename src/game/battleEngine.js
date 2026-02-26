@@ -5,7 +5,15 @@ export function runBattle(playerDeck, botDeck) {
   let playerCard = { ...playerDeck[playerIndex] }
   let botCard = { ...botDeck[botIndex] }
 
+  const log = []
+
   while (playerIndex < 5 && botIndex < 5) {
+    log.push({
+      playerCard: { ...playerCard },
+      botCard: { ...botCard }
+    })
+
+    // Player attacks
     botCard.hp -= playerCard.attack
     if (botCard.hp <= 0) {
       botIndex++
@@ -14,6 +22,7 @@ export function runBattle(playerDeck, botDeck) {
       continue
     }
 
+    // Bot attacks
     playerCard.hp -= botCard.attack
     if (playerCard.hp <= 0) {
       playerIndex++
@@ -22,5 +31,7 @@ export function runBattle(playerDeck, botDeck) {
     }
   }
 
-  return playerIndex >= 5 ? "Bot Wins" : "Player Wins"
+  const winner = playerIndex >= 5 ? "Bot Wins" : "Player Wins"
+
+  return { log, winner }
 }
