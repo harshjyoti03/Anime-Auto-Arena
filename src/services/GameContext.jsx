@@ -1,13 +1,16 @@
 import { createContext, useState, useEffect } from "react"
+import universes from "../data/universes"
 
 export const GameContext = createContext()
 
 export function GameProvider({ children }) {
 
-  const [selectedUniverse, setSelectedUniverse] = useState(() => {
-    const saved = localStorage.getItem("selectedUniverse")
-    return saved ? JSON.parse(saved) : null
+  const [selectedUniverseId, setSelectedUniverseId] = useState(() => {
+    return localStorage.getItem("selectedUniverseId") || null
   })
+
+  const selectedUniverse =
+    universes.find(u => u.id === selectedUniverseId) || null
 
   const [playerDeck, setPlayerDeck] = useState(() => {
     const saved = localStorage.getItem("playerDeck")
@@ -19,21 +22,16 @@ export function GameProvider({ children }) {
     return saved ? JSON.parse(saved) : []
   })
 
-  const [battleResult, setBattleResult] = useState(null)
-
-  // Persist selectedUniverse
   useEffect(() => {
-    if (selectedUniverse) {
-      localStorage.setItem("selectedUniverse", JSON.stringify(selectedUniverse))
+    if (selectedUniverseId) {
+      localStorage.setItem("selectedUniverseId", selectedUniverseId)
     }
-  }, [selectedUniverse])
+  }, [selectedUniverseId])
 
-  // Persist playerDeck
   useEffect(() => {
     localStorage.setItem("playerDeck", JSON.stringify(playerDeck))
   }, [playerDeck])
 
-  // Persist botDeck
   useEffect(() => {
     localStorage.setItem("botDeck", JSON.stringify(botDeck))
   }, [botDeck])
@@ -42,13 +40,11 @@ export function GameProvider({ children }) {
     <GameContext.Provider
       value={{
         selectedUniverse,
-        setSelectedUniverse,
+        setSelectedUniverseId,
         playerDeck,
         setPlayerDeck,
         botDeck,
-        setBotDeck,
-        battleResult,
-        setBattleResult
+        setBotDeck
       }}
     >
       {children}

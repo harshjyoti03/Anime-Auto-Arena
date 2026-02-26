@@ -5,10 +5,10 @@ import universes from "../data/universes"
 
 function UniverseSelect() {
   const navigate = useNavigate()
-  const { setSelectedUniverse } = useContext(GameContext)
+  const { setSelectedUniverseId } = useContext(GameContext)
 
   const handleSelect = (universe) => {
-    setSelectedUniverse(universe)
+    setSelectedUniverseId(universe.id)
     navigate("/cardpool")
   }
 
