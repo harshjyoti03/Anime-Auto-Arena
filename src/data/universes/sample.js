@@ -1,6 +1,8 @@
 const sampleUniverse = {
   id: "sample",
   name: "Sample Arena",
+  description: "Basic Test Universe",
+  mechanic: "none",
   cards: [
     { id: 1, name: "Blaze Ninja", attack: 8, hp: 10, rarity: "common" },
     { id: 2, name: "Shadow Samurai", attack: 10, hp: 7, rarity: "rare" },

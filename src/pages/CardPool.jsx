@@ -1,18 +1,22 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { GameContext } from "../services/GameContext"
 
 function CardPool() {
   const navigate = useNavigate()
   const { selectedUniverse, setPlayerDeck } = useContext(GameContext)
+  
+  useEffect(() => {
+    if (!selectedUniverse) {
+        navigate("/")
+    }
+  }, [selectedUniverse, navigate])
 
   const [selectedCards, setSelectedCards] = useState([])
 
-  if (!selectedUniverse) return <p>No universe selected</p>
-
   const toggleCard = (card) => {
-    if (selectedCards.includes(card)) {
-      setSelectedCards(selectedCards.filter(c => c !== card))
+    if (selectedCards.some(c => c.id === card.id)) {
+      setSelectedCards(selectedCards.filter(c => c.id !== card.id))
     } else {
       if (selectedCards.length < 5) {
         setSelectedCards([...selectedCards, card])
@@ -38,11 +42,11 @@ function CardPool() {
                 key={card.id}
                 onClick={() => toggleCard(card)}
                 className={`card ${card.rarity}
-                ${selectedCards.includes(card) ? "selected" : ""}
-                ${selectedCards.length === 5 && !selectedCards.includes(card) ? "unselected-dim" : ""}
+                ${selectedCards.some(c => c.id === card.id) ? "selected" : ""}
+                ${selectedCards.length === 5 && !selectedCards.some(c => c.id === card.id) ? "unselected-dim" : ""}
                 `}
             >
-                {selectedCards.includes(card) && (
+                {selectedCards.some(c => c.id === card.id) && (
                 <div className="selected-badge">✓</div>
                 )}
 
