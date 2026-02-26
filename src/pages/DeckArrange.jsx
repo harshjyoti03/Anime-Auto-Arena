@@ -27,8 +27,11 @@ function DeckArrange() {
   }
 
   const startBattle = () => {
-    const bot = generateBotDeck(selectedUniverse.cards)
-    setBotDeck(bot)
+    const botDeck = generateBotDeck(
+        selectedUniverse.cards,
+        playerDeck
+    )
+    setBotDeck(botDeck)
     navigate("/battle")
   }
 

@@ -1,3 +1,6 @@
+
+import { chooseNextBotCard } from "./botAI"
+
 export function runBattle(playerDeck, botDeck) {
   let playerIndex = 0
   let botIndex = 0
@@ -29,7 +32,15 @@ export function runBattle(playerDeck, botDeck) {
     if (botCard.hp <= 0) {
       botIndex++
       if (botIndex >= 5) break
-      botCard = { ...botDeck[botIndex], maxHp: botDeck[botIndex].hp }
+      const nextBot = chooseNextBotCard(
+        botDeck.slice(botIndex),
+        playerCard
+      )
+
+      botCard = {
+        ...nextBot,
+        maxHp: nextBot.hp
+      }
       continue
     }
 
