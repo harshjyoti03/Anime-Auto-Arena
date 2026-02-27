@@ -1,9 +1,10 @@
-
+import { applyUniverseMechanic } from "./universeMechanics"
 import { chooseNextBotCard } from "./botAI"
 
-export function runBattle(playerDeck, botDeck) {
+export function runBattle(playerDeck, botDeck, universe) {
   let playerIndex = 0
   let botIndex = 0
+  let round = 1
 
   let playerCard = { ...playerDeck[playerIndex], maxHp: playerDeck[playerIndex].hp }
   let botCard = { ...botDeck[botIndex], maxHp: botDeck[botIndex].hp }
@@ -19,6 +20,15 @@ export function runBattle(playerDeck, botDeck) {
   }
   
   while (playerIndex < 5 && botIndex < 5) {
+
+    applyUniverseMechanic(
+        universe?.mechanic?.id,
+        playerCard,
+        botCard,
+        round,
+        combatLog
+    )
+
     log.push({
       playerCard: { ...playerCard },
       botCard: { ...botCard }

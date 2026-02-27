@@ -19,7 +19,11 @@ const sampleUniverse = {
   id: "sample",
   name: "Sample Arena",
   description: "Procedural Test Universe",
-  mechanic: "none",
+  mechanic: {
+    id: "rageOverflow",
+    name: "Rage Overflow",
+    description: "All cards gain +1 ATK every round."
+  },
   cards: names.map((name, index) =>
     generateCard(name, index + 1, universeSeed)
   )

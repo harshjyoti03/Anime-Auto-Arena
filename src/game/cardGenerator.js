@@ -32,12 +32,15 @@ function generateStats(rarity, seed) {
 function assignAbility(rarity, seed) {
   const chance = seededRandom(seed + 5)
 
-  if (rarity === "epic" && chance > 0.3) {
-    return abilityPool[Math.floor(chance * abilityPool.length)]
-  }
+  if (
+    (rarity === "epic" && chance > 0.3) ||
+    (rarity === "rare" && chance > 0.6)
+  ) {
+    // Use a different seed offset for ability index
+    const abilitySeed = seededRandom(seed * 13 + 29)
+    const index = Math.floor(abilitySeed * abilityPool.length)
 
-  if (rarity === "rare" && chance > 0.6) {
-    return abilityPool[Math.floor(chance * abilityPool.length)]
+    return abilityPool[index]
   }
 
   return null

@@ -6,13 +6,13 @@ import { runBattle } from "../game/battleEngine"
 function Battle() {
   const navigate = useNavigate()
 
-  const { playerDeck, botDeck } = useContext(GameContext)
+  const { playerDeck, botDeck, selectedUniverse } = useContext(GameContext)
 
   useEffect(() => {
-    if (!playerDeck || playerDeck.length === 0) {
+    if (!playerDeck || playerDeck.length !== 5 || !selectedUniverse) {
       navigate("/")
     }
-  }, [playerDeck, navigate])
+  }, [playerDeck, selectedUniverse, navigate])
 
   const [battleLog, setBattleLog] = useState([])
   const [currentStep, setCurrentStep] = useState(0)
@@ -27,12 +27,12 @@ function Battle() {
   useEffect(() => {
     if (!playerDeck || playerDeck.length === 0) return
 
-    const battleData = runBattle(playerDeck, botDeck)
+    const battleData = runBattle(playerDeck, botDeck, selectedUniverse)
 
     setBattleLog(battleData.log)
     setCombatLog(battleData.combatLog || [])
     setResult(battleData.winner)
-  }, [playerDeck, botDeck])
+  }, [playerDeck, botDeck, selectedUniverse])
 
   useEffect(() => {
     if (currentStep < battleLog.length - 1) {
